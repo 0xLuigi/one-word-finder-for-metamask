@@ -1,0 +1,487 @@
+/* ======================================
+   ZÁKLADNÉ NASTAVENIA
+   ====================================== */
+body {
+    font-family: 'Arial', sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+    line-height: 1.6;
+    background-image: url('images/bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* ======================================
+   KONTAJNERY
+   ====================================== */
+.container {
+    background-color: rgba(68, 68, 68, 0.85);
+    padding: 30px;
+    margin: 30px auto 10px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 80%;
+    max-width: 800px;
+    min-height: 400px; /* Zabezpečí, že kontajner má minimálnu výšku */
+}
+
+/* ======================================
+   TYPOGRAFIA
+   ====================================== */
+h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 2.5rem;
+    color: #f27641;
+}
+
+/* ======================================
+   STAV APLIKÁCIE
+   ====================================== */
+.status {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+#statusDot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: gray;
+    border-radius: 50%;
+    margin-left: 8px;
+}
+
+.blinking {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% {
+        background-color: #00ff00;
+        box-shadow: 0 0 10px #00ff00;
+    }
+}
+
+/* ======================================
+   FORMULÁRE A VSTUPNÉ POLIA
+   ====================================== */
+.eth-address-input {
+    width: 100%;
+    margin-bottom: 28px;
+    padding: 10px;
+    border: 2px solid #555;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+    background-color: #666;
+    color: #fff;
+}
+
+.eth-address-input:focus {
+    border-color: #66d9ef;
+    outline: none;
+    box-shadow: 0 0 5px rgba(102, 217, 239, 0.5);
+}
+
+.input-group {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 15px 4px;
+    border: 2px solid #f27641;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+    background-color: #242220;
+    color: #58edeb;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+    border-color: #66d9ef;
+    outline: none;
+    box-shadow: 0 0 5px rgba(102, 217, 239, 0.5);
+}
+
+.invalid-word {
+    border-color: #ff4d4d !important;
+    box-shadow: 0 0 5px rgba(255, 77, 77, 0.5) !important;
+}
+
+.valid-word {
+    border-color: #00cc00 !important;
+    box-shadow: 0 0 5px rgba(0, 204, 0, 0.5) !important;
+}
+
+/* ======================================
+   NÁVRHY SLOV (SUGGESTIONS)
+   ====================================== */
+.suggestions-container {
+    display: block; /* Elementy pod sebou */
+    margin-bottom: 10px;
+    width: 100%; /* Rovnaká šírka ako eth-address-input */
+    background-color: #555; /* Vrátené na pôvodnú farbu #555 */
+    border-radius: 8px; /* Rovnaký radius ako #result */
+    padding: 0; /* Odstránime padding, aby hlavička a obsah boli priamo na okrajoch */
+    box-sizing: border-box;
+    text-align: left; /* Zarovnanie textu naľavo */
+}
+
+.suggestions-label {
+    font-size: 14px;
+    color: #fff; /* Biela farba textu */
+    font-weight: bold;
+    background-color: #f27641; /* pozadie pre prvý riadok v suggestion */
+    padding: 8px 10px; /* Väčší padding pre väčší vzhľad */
+    border-radius: 8px 8px 0 0; /* Zaoblené rohy iba hore, aby to vyzeralo ako hlavička */
+    display: block; /* Celá šírka kontajnera */
+}
+
+.suggestions-wrapper {
+    display: block; /* Zmenené na block, aby návrhy boli pod sebou */
+    white-space: normal; /* Povolí zalomenie textu */
+    word-break: break-word; /* Zalomí dlhé riadky */
+    color: #fff; /* Biela farba pre návrhy */
+    padding: 5px 10px; /* Padding pre obsah pod hlavičkou */
+}
+
+.suggestion {
+    cursor: pointer;
+    white-space: nowrap; /* Aby jednotlivé slová nezalamovalo */
+    display: inline; /* Aby boli slová v riadku oddelené čiarkami */
+    background-color: transparent; /* Žiadne pozadie */
+    border: none; /* Žiadne orámovanie */
+    position: relative; /* Pre tooltip */
+}
+
+/* Tooltip štýl - použitie data-tooltip namiesto title */
+.suggestion:hover::after {
+    content: attr(data-tooltip); /* Zobrazí text z atribútu data-tooltip */
+    position: absolute;
+    top: -25px; /* Nad slovom */
+    left: 0;
+    background-color: #333; /* Tmavé pozadie tooltipu */
+    color: #fff; /* Biela farba textu */
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1;
+}
+
+/* Šípka pod tooltipom */
+.suggestion:hover::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+    z-index: 2;
+}
+
+/* Hover efekt - oranžové zvýraznenie */
+.suggestion:hover {
+    color: #f27641; /* Oranžová farba pri hoveri */
+}
+
+/* ======================================
+   CHYBOVÉ SPRÁVY
+   ====================================== */
+#errorMessage {
+    color: #ff4d4d;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* ======================================
+   TLAČIDLÁ
+   ====================================== */
+.button-group {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #f27641;
+    color: #fff;
+    padding: 15px 4px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button:hover {
+    background-color: #e06a3a;
+}
+
+#resetButton {
+    background-color: #ff4d4d;
+}
+
+#resetButton:hover {
+    background-color: #e63946;
+}
+
+#resetButton.stop-state {
+    background-color: #ff4444;
+}
+
+#resetButton.stop-state:hover {
+    background-color: #cc0000;
+}
+
+#copyButton {
+    background-color: #5cb85c;
+}
+
+#copyButton:hover {
+    background-color: #4cae4c;
+}
+
+#allCombinationsButton {
+    background-color: #9b59b6;
+}
+
+#allCombinationsButton:hover {
+    background-color: #8e44ad;
+}
+
+/* Úprava pre download-container */
+#download-container {
+    display: flex;
+    flex-direction: column; /* Tlačidlá pod sebou */
+    align-items: center; /* Centrovanie tlačidiel */
+    gap: 15px; /* Rovnaký vertikálny odstup ako v .button-group */
+    margin-top: 20px; /* Odstup od textu nad */
+    text-align: center;
+    width: 100%;
+}
+
+.download-button {
+    background-color: #3498db;
+    color: white;
+    padding: 15px 4px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%; /* Rovnaká šírka ako tlačidlá v .button-group */
+    max-width: 220px; /* Obmedzenie šírky pre konzistenciu */
+    margin: 0 0 15px 0; /* Add bottom margin of 20px */
+}
+
+.download-button:hover {
+    background-color: #2980b9;
+}
+
+button:disabled,
+#findButton:disabled,
+#resetButton:disabled,
+#copyButton:disabled,
+#allCombinationsButton:disabled,
+#downloadButton:disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+/* ======================================
+   PROGRESS BAR
+   ====================================== */
+#progress {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #555;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #fff;
+    display: none;
+}
+
+#progressText {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.tested-count {
+    color: #fff; /* Farba pre "Tested" */
+}
+
+.elapsed-time {
+    color: #fff; /* Farba pre "Elapsed" */
+}
+
+.progress-container {
+    width: 100%;
+    background-color: #444;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 20px;
+    background-image: linear-gradient(to right, #ff4500, #ffa500, #ffff00, #7cfc00, #00ff00);
+    width: 0%;
+    border-radius: 5px;
+    transition: width 0.3s ease;
+    text-align: right;
+    padding-right: 3px;
+    line-height: 20px;
+    color: #000;
+    font-weight: bold;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* ======================================
+   VÝSLEDKY
+   ====================================== */
+#result {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #555;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #fff;
+}
+
+#result:empty {
+    display: none;
+}
+
+/* ======================================
+   MODÁLNE OKNO
+   ====================================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(128, 128, 128, 0.4);
+}
+
+.modal-content {
+    background-color: #555;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    position: relative;
+    color: #fff;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* ======================================
+   FOOTER
+   ====================================== */
+footer {
+    background-color: rgba(68, 68, 68, 0.85);
+    color: #fff;
+    text-align: center;
+    margin-top: 20px;
+    width: 80%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-left {
+    text-align: left;
+    position: relative;
+}
+
+.footer-right {
+    text-align: right;
+    position: relative;
+}
+
+.footer-right a {
+    color: #f27641;
+    text-decoration: none;
+    position: relative;
+}
+
+#coffee-icon img {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+/* ======================================
+   RESPONZÍVNY DIZAJN
+   ====================================== */
+@media (max-width: 768px) {
+    .input-group {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .button-group {
+        grid-template-columns: 1fr;
+    }
+
+    #download-container {
+        gap: 15px; /* Zachová odstup aj na mobile */
+    }
+
+    .download-button {
+        width: 100%;
+        max-width: none;
+        padding: 12px;
+    }
+}
